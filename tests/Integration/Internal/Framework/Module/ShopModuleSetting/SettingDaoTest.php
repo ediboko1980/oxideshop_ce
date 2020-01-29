@@ -9,6 +9,7 @@ declare(strict_types=1);
 
 namespace OxidEsales\EshopCommunity\Tests\Integration\Internal\Framework\Module\Setting;
 
+use Doctrine\DBAL\Query\QueryBuilder;
 use OxidEsales\Eshop\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Utility\ShopSettingEncoderInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInterface;
@@ -17,6 +18,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
 use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\ConfigHandlingTrait;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,6 +27,22 @@ use PHPUnit\Framework\TestCase;
 class SettingDaoTest extends TestCase
 {
     use ContainerTrait;
+    use ConfigHandlingTrait;
+
+    const TESTPREFIX = 'test';
+
+    public function setUp()
+    {
+        parent::setUp();
+        $this->backupConfig();
+    }
+
+    public function tearDown()
+    {
+        $this->cleanUp();
+        $this->restoreConfig();
+        parent::tearDown();
+    }
 
     /**
      * @dataProvider settingValueDataProvider
@@ -47,14 +65,14 @@ class SettingDaoTest extends TestCase
                 'second',
                 'third',
             ])
-            ->setGroupName('testGroup')
+            ->setGroupName(self::TESTPREFIX . 'Group')
             ->setPositionInGroup(5);
 
-        $settingDao->save($shopModuleSetting, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
 
         $this->assertEquals(
             $shopModuleSetting,
-            $settingDao->get($name, 'testModuleId', 1)
+            $settingDao->get($name, self::TESTPREFIX . 'ModuleId', 1)
         );
     }
 
@@ -72,10 +90,10 @@ class SettingDaoTest extends TestCase
                 'second',
                 'third',
             ])
-            ->setGroupName('testGroup')
+            ->setGroupName(self::TESTPREFIX . 'Group')
             ->setPositionInGroup(5);
 
-        $settingDao->save($shopModuleSetting1, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting1, self::TESTPREFIX . 'ModuleId', 1);
 
         $shopModuleSetting2 = new Setting();
         $shopModuleSetting2
@@ -87,19 +105,19 @@ class SettingDaoTest extends TestCase
                 '2',
                 '3',
             ])
-            ->setGroupName('testGroup')
+            ->setGroupName(self::TESTPREFIX . 'Group')
             ->setPositionInGroup(5);
 
-        $settingDao->save($shopModuleSetting2, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting2, self::TESTPREFIX . 'ModuleId', 1);
 
         $this->assertEquals(
             $shopModuleSetting1,
-            $settingDao->get('first', 'testModuleId', 1)
+            $settingDao->get('first', self::TESTPREFIX . 'ModuleId', 1)
         );
 
         $this->assertEquals(
             $shopModuleSetting2,
-            $settingDao->get('second', 'testModuleId', 1)
+            $settingDao->get('second', self::TESTPREFIX . 'ModuleId', 1)
         );
     }
 
@@ -110,7 +128,7 @@ class SettingDaoTest extends TestCase
     {
         $settingDao = $this->getSettingDao();
 
-        $settingDao->get('onExistentSetting', 'moduleId', 1);
+        $settingDao->get('nonExistentSetting', 'moduleId', 1);
     }
 
     public function testGetSettingNotExistingInOxConfigdisplayTableReturnsSettingFromOxconfigTable()
@@ -128,10 +146,11 @@ class SettingDaoTest extends TestCase
             ->setGroupName('')
             ->setPositionInGroup(0);
 
-        $this->saveDataToOxConfigTable($shopModuleSetting, 'testModuleId', 1);
+        $this->saveDataToOxConfigTable($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
 
         $settingDao = $this->getSettingDao();
-        $this->assertEquals($shopModuleSettingFromOxConfig, $settingDao->get('third', 'testModuleId', 1));
+        $this->assertEquals($shopModuleSettingFromOxConfig,
+            $settingDao->get('third', self::TESTPREFIX . 'ModuleId', 1));
     }
 
     /**
@@ -143,14 +162,14 @@ class SettingDaoTest extends TestCase
 
         $shopModuleSetting = new Setting();
         $shopModuleSetting
-            ->setName('testDelete')
+            ->setName(self::TESTPREFIX . 'Delete')
             ->setType('some')
             ->setValue('some');
 
-        $settingDao->save($shopModuleSetting, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
 
-        $settingDao->delete($shopModuleSetting, 'testModuleId', 1);
-        $settingDao->get('testDelete', 'testModuleId', 1);
+        $settingDao->delete($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
+        $settingDao->get(self::TESTPREFIX . 'Delete', self::TESTPREFIX . 'ModuleId', 1);
     }
 
     public function testUpdate(): void
@@ -159,27 +178,26 @@ class SettingDaoTest extends TestCase
 
         $shopModuleSetting = new Setting();
         $shopModuleSetting
-            ->setName('testUpdate')
+            ->setName(self::TESTPREFIX . 'Update')
             ->setType('some')
             ->setValue('valueBeforeUpdate');
 
-        $settingDao->save($shopModuleSetting, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
 
         $shopModuleSetting->setValue('valueAfterUpdate');
 
-        $settingDao->save($shopModuleSetting, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
 
         $this->assertEquals(
             $shopModuleSetting,
-            $settingDao->get('testUpdate', 'testModuleId', 1)
+            $settingDao->get(self::TESTPREFIX . 'Update', self::TESTPREFIX . 'ModuleId', 1)
         );
     }
 
     public function testUpdateDoesNotCreateDuplicationsInDatabase(): void
     {
-        $this->markTestSkipped("TODO: Other tests do not reset test data correctly.");
-        $moduleId = 'testModuleId';
-        $settingName = 'testSettingName';
+        $moduleId = self::TESTPREFIX . 'ModuleId';
+        $settingName = self::TESTPREFIX . 'SettingName';
 
         $this->assertSame(0, $this->getOxConfigTableRowCount($settingName, 1, $moduleId));
         $this->assertSame(0, $this->getOxDisplayConfigTableRowCount($settingName, $moduleId));
@@ -222,11 +240,11 @@ class SettingDaoTest extends TestCase
             ->setType($type)
             ->setValue($value);
 
-        $settingDao->save($shopModuleSetting, 'testModuleId', 1);
+        $settingDao->save($shopModuleSetting, self::TESTPREFIX . 'ModuleId', 1);
 
         $this->assertSame(
-            $settingDao->get($name, 'testModuleId', 1)->getValue(),
-            Registry::getConfig()->getShopConfVar($name, 1, 'module:testModuleId')
+            $settingDao->get($name, self::TESTPREFIX . 'ModuleId', 1)->getValue(),
+            Registry::getConfig()->getShopConfVar($name, 1, 'module:' . self::TESTPREFIX . 'ModuleId')
         );
     }
 
@@ -303,7 +321,6 @@ class SettingDaoTest extends TestCase
         $shopAdapter = $this->get(ShopAdapterInterface::class);
         $shopSettingEncoder = $this->get(ShopSettingEncoderInterface::class);
         $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
-        $context = $this->get(ContextInterface::class);
 
         $queryBuilder = $queryBuilderFactory->create();
         $queryBuilder
@@ -338,5 +355,24 @@ class SettingDaoTest extends TestCase
     private function getPrefixedModuleId(string $moduleId): string
     {
         return 'module:' . $moduleId;
+    }
+
+    private function cleanUp()
+    {
+        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilder = $queryBuilderFactory->create();
+        $queryBuilder
+            ->delete('oxconfig')
+            ->where($queryBuilder->expr()->like('oxvarname', ':testprefix'))
+            ->setParameter('testprefix', self::TESTPREFIX . '%')
+            ->execute();
+        $queryBuilder
+            ->delete('oxconfigdisplay')
+            ->where($queryBuilder->expr()->like('oxcfgvarname', ':testprefix'))
+            ->setParameter('testprefix', self::TESTPREFIX . '%')
+            ->execute();
+
     }
 }
