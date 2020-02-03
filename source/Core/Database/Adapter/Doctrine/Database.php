@@ -1388,7 +1388,7 @@ class Database implements DatabaseInterface
     private function getConnectionConfiguration(): Configuration
     {
         $configuration = new Configuration();
-        $this->configureSqlLogger($configuration);
+        //$this->configureSqlLogger($configuration);
         return $configuration;
     }
 
