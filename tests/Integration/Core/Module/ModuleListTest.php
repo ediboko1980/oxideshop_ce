@@ -17,7 +17,7 @@ use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ShopConfigurationDaoBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\DataObject\ModuleConfiguration;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
-use OxidEsales\EshopCommunity\Tests\TestUtils\ModuleTestingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

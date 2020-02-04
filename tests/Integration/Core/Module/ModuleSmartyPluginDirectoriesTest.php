@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core\Module;
 
 use OxidEsales\Eshop\Core\UtilsView;
-use OxidEsales\EshopCommunity\Tests\TestUtils\ModuleTestingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use PHPUnit\Framework\TestCase;
 
 /**

@@ -10,8 +10,8 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\Templ
 use OxidEsales\Eshop\Core\Field;
 use OxidEsales\EshopCommunity\Core\Registry;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateFilterLogic;
-use OxidEsales\EshopCommunity\Tests\TestUtils\ConfigHandlingTrait;
-use OxidEsales\EshopCommunity\Tests\TestUtils\LanguageHandlingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ConfigHandlingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\LanguageHandlingTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit\Framework\TestCase;
 

@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\TestUtils;
+namespace OxidEsales\EshopCommunity\Tests\TestUtils\Traits;
 
 use OxidEsales\Eshop\Core\Language;
 use OxidEsales\Eshop\Core\Registry;

@@ -10,7 +10,7 @@ declare(strict_types=1);
 namespace OxidEsales\EshopCommunity\Tests\Integration\Core;
 
 use OxidEsales\Eshop\Core\ViewConfig;
-use OxidEsales\EshopCommunity\Tests\TestUtils\ModuleTestingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleTestingTrait;
 use PHPUnit\Framework\TestCase;
 
 final class ViewConfigTest extends TestCase

@@ -17,14 +17,18 @@ use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridge;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Bridge\ProductRatingBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Dao\ProductRatingDao;
 use OxidEsales\EshopCommunity\Internal\Domain\Review\Service\ProductRatingService;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 
 class ProductRatingBridgeTest extends \PHPUnit\Framework\TestCase
 {
+    use DatabaseTestingTrait;
+
     private $ratingIds = [];
 
     public function setUp()
     {
         parent::setUp();
+        $this->setupTestDatabase();
         $this->createTestProduct();
         $this->createTestRatings();
     }

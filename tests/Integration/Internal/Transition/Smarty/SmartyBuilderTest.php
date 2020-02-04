@@ -14,38 +14,38 @@ use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContext;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactoryInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyBuilder;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContext;
-use OxidEsales\EshopCommunity\Internal\Framework\Smarty\Configuration\SmartyConfigurationFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Smarty\SmartyContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\TestContainerFactory;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ConfigHandlingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 
 class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
 {
-    private $debugMode;
+    use ConfigHandlingTrait;
+    use DatabaseTestingTrait;
 
     public function setUp()
     {
         parent::setUp();
-        $this->debugMode = Registry::getConfig()->getConfigParam('iDebug');
+        $this->backupConfig();
     }
 
     public function tearDown()
     {
-        Registry::getConfig()->setConfigParam('iDebug', $this->debugMode);
+        $this->restoreConfig();
         parent::tearDown();
     }
 
     /**
      * @dataProvider smartySettingsDataProvider
      *
-     * @param bool  $securityMode
+     * @param bool $securityMode
      * @param array $smartySettings
      */
     public function testSmartySettingsAreSetCorrect($securityMode, $smartySettings)
     {
         $smartyBuilder = new SmartyBuilder();
-        /** @var SmartyConfigurationFactory $configurationFactory */
-        $configurationFactory = $this->setupAndConfigureContainer($securityMode)
-            ->get(SmartyConfigurationFactoryInterface::class);
+        $this->setupAndConfigureContainer($securityMode);
+        $configurationFactory = $this->get(SmartyConfigurationFactoryInterface::class);
         $configuration = $configurationFactory->getConfiguration();
         $smarty = $smartyBuilder->setSettings($configuration->getSettings())
             ->setSecuritySettings($configuration->getSecuritySettings())
@@ -167,13 +167,6 @@ class SmartyBuilderTest extends \PHPUnit\Framework\TestCase
      */
     private function setupAndConfigureContainer($securityMode = false)
     {
-        $container = (new TestContainerFactory())->create();
-
-        $container->set(SmartyContextInterface::class, $this->getSmartyContext($securityMode));
-        $container->autowire(SmartyContextInterface::class, SmartyContext::class);
-
-        $container->compile();
-
-        return $container;
+        $this->overrideService(SmartyContextInterface::class, $this->getSmartyContext($securityMode));
     }
 }

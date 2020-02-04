@@ -8,7 +8,7 @@
 namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Transition\Adapter\TemplateLogic;
 
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\TemplateLogic\TranslateSalutationLogic;
-use OxidEsales\EshopCommunity\Tests\TestUtils\LanguageHandlingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\LanguageHandlingTrait;
 use OxidEsales\TestingLibrary\UnitTestCase;
 use PHPUnit\Framework\TestCase;
 

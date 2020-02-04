@@ -4,16 +4,16 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\Utils;
+namespace OxidEsales\EshopCommunity\Tests\TestUtils\Traits;
 
-use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\Dao\ShopConfigurationSettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Config\DataObject\ShopConfigurationSetting;
 use OxidEsales\EshopCommunity\Internal\Framework\Dao\EntryDoesNotExistDaoException;
-use Psr\Container\ContainerInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 
 class ModuleSettingsRestorer
 {
+    use ContainerTrait;
     /**
      * @var ShopConfigurationSettingDaoInterface
      */
@@ -38,12 +38,8 @@ class ModuleSettingsRestorer
     {
         $this->shopId = $shopId;
 
-        /** @var ContainerInterface */
-        $container = ContainerFactory::getInstance()->getContainer();
-
-        $this->shopConfigurationSettingDao = $container->get(ShopConfigurationSettingDaoInterface::class);
+        $this->shopConfigurationSettingDao = $this->get(ShopConfigurationSettingDaoInterface::class);
         $this->settings = $this->getSettings($shopId);
-
     }
 
     public function restoreModuleSettings()

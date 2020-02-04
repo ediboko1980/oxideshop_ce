@@ -14,7 +14,7 @@ use Composer\Package\Package;
 use OxidEsales\ComposerPlugin\Installer\Package\ModulePackageInstaller;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ContainerTrait;
 use PHPUnit\Framework\TestCase;
 
 class ModulePackageInstallerTest extends TestCase

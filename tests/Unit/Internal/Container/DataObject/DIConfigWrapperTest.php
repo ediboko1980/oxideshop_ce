@@ -12,6 +12,7 @@ namespace OxidEsales\EshopCommunity\Tests\Unit\Internal\Container\DataObject;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\DataObject\DIConfigWrapper;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\Exception\SystemServiceOverwriteException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Warning;
 use Psr\Container\ContainerInterface;
 
 class ContainerStub implements ContainerInterface

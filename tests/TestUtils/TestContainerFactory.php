@@ -7,12 +7,15 @@
 
 declare(strict_types=1);
 
-namespace OxidEsales\EshopCommunity\Tests\Integration\Internal;
+namespace OxidEsales\EshopCommunity\Tests\TestUtils;
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\DriverManager;
 use org\bovigo\vfs\vfsStream;
 use OxidEsales\EshopCommunity\Internal\Framework\DIContainer\ContainerBuilder;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\BasicContextInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Database\TestConnectionFactory;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\BasicContextStub;
 use OxidEsales\EshopCommunity\Tests\Unit\Internal\ContextStub;
 use Symfony\Component\DependencyInjection\ContainerBuilder as SymfonyContainerBuilder;
@@ -34,7 +37,7 @@ class TestContainerFactory
         $this->context = $this->getContextStub();
     }
 
-    public function create(): SymfonyContainerBuilder
+    public function create(array $serviceMocks = []): SymfonyContainerBuilder
     {
         $containerBuilder = new ContainerBuilder($this->context);
 
@@ -42,7 +45,15 @@ class TestContainerFactory
         $container = $this->setAllServicesAsPublic($container);
         $container = $this->setBasicContextStub($container);
         $container = $this->setContextStub($container);
+        $container = $this->setDatabaseConnection($container);
+        $container = $this->setMocks($container, $serviceMocks);
 
+        return $container;
+    }
+
+    private function setDatabaseConnection(SymfonyContainerBuilder $container)
+    {
+        $container->getDefinition(Connection::class)->setFactory([TestConnectionFactory::class, 'get']);
         return $container;
     }
 
@@ -52,6 +63,15 @@ class TestContainerFactory
             $definition->setPublic(true);
         }
 
+        return $container;
+    }
+
+    private function setMocks(SymfonyContainerBuilder $container, array $mocks): SymfonyContainerBuilder
+    {
+        foreach($mocks as $serviceKey => $service) {
+            $container->set($serviceKey, $service);
+            $container->autowire($serviceKey, get_class($service));
+        }
         return $container;
     }
 

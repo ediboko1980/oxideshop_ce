@@ -78,5 +78,11 @@
                 "Internal/**/*"
             ]
         }
+    },
+    "repositories": {
+        "oxid-esales/traditional-testing": {
+            "type": "path",
+            "url": "/home/michael/workspace/traditional_testing"
+        }
     }
 }

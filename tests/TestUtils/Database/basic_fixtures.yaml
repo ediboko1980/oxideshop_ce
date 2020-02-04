@@ -1,0 +1,4 @@
+oxconfig:
+  - {OXID: 'UUID', OXVARNAME: 'sTheme', OXVARVALUE: 'flow', OXVARTYPE: 'str'}
+oxshops:
+  - {OXID: 1, OXEDITION: 'CE', OXVERSION: '6.0.0'}

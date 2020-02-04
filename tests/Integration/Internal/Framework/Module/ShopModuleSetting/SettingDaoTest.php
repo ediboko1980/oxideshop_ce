@@ -16,31 +16,27 @@ use OxidEsales\EshopCommunity\Internal\Framework\Database\QueryBuilderFactoryInt
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\SettingDaoInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setting\Setting;
 use OxidEsales\EshopCommunity\Internal\Transition\Adapter\ShopAdapterInterface;
-use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Integration\Internal\ContainerTrait;
-use OxidEsales\EshopCommunity\Tests\TestUtils\ConfigHandlingTrait;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\DatabaseTestingTrait;
 use PHPUnit\Framework\TestCase;
+use Webmozart\PathUtil\Path;
 
 /**
  * @internal
  */
 class SettingDaoTest extends TestCase
 {
-    use ContainerTrait;
-    use ConfigHandlingTrait;
+    use DatabaseTestingTrait;
 
     const TESTPREFIX = 'test';
 
     public function setUp()
     {
-        parent::setUp();
-        $this->backupConfig();
+        $this->loadFixture(Path::join(__DIR__, 'Fixtures', 'emptyconfig.yaml'));
     }
 
     public function tearDown()
     {
-        $this->cleanUp();
-        $this->restoreConfig();
+        $this->cleanupFixtureTables();
         parent::tearDown();
     }
 
@@ -357,22 +353,4 @@ class SettingDaoTest extends TestCase
         return 'module:' . $moduleId;
     }
 
-    private function cleanUp()
-    {
-        $queryBuilderFactory = $this->get(QueryBuilderFactoryInterface::class);
-
-        /** @var QueryBuilder $queryBuilder */
-        $queryBuilder = $queryBuilderFactory->create();
-        $queryBuilder
-            ->delete('oxconfig')
-            ->where($queryBuilder->expr()->like('oxvarname', ':testprefix'))
-            ->setParameter('testprefix', self::TESTPREFIX . '%')
-            ->execute();
-        $queryBuilder
-            ->delete('oxconfigdisplay')
-            ->where($queryBuilder->expr()->like('oxcfgvarname', ':testprefix'))
-            ->setParameter('testprefix', self::TESTPREFIX . '%')
-            ->execute();
-
-    }
 }

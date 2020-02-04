@@ -4,7 +4,7 @@
  * See LICENSE file for license details.
  */
 
-namespace OxidEsales\EshopCommunity\Tests\TestUtils;
+namespace OxidEsales\EshopCommunity\Tests\TestUtils\Traits;
 
 use OxidEsales\EshopCommunity\Internal\Container\ContainerFactory;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Configuration\Bridge\ModuleConfigurationDaoBridgeInterface;
@@ -13,7 +13,7 @@ use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\DataObject\OxidE
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Install\Service\ModuleInstallerInterface;
 use OxidEsales\EshopCommunity\Internal\Framework\Module\Setup\Bridge\ModuleActivationBridgeInterface;
 use OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface;
-use OxidEsales\EshopCommunity\Tests\Utils\ModuleSettingsRestorer;
+use OxidEsales\EshopCommunity\Tests\TestUtils\Traits\ModuleSettingsRestorer;
 use Psr\Container\ContainerInterface;
 use Webmozart\PathUtil\Path;
 
@@ -42,7 +42,8 @@ trait ModuleTestingTrait
     public function installModule(string $id, $fixturePath = null)
     {
         if ($fixturePath === null) {
-            $fixturePath = Path::canonicalize(Path::join(__DIR__, '../Integration/Core/Module/Fixtures/'));
+            $fixturePath = Path::canonicalize(Path::join(__DIR__, '..', '..',
+                'Integration', 'Core', 'Module', 'Fixtures'));
         }
         $package = new OxidEshopPackage($id, Path::join($fixturePath, $id));
         $package->setTargetDirectory(Path::join('oeTest', $id));
