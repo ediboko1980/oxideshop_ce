@@ -25,8 +25,8 @@ services:
   utility.context.log_file_path:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
     public: true
-    factory: ['OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogFilePath']
+    factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogFilePath']
   utility.context.log_level:
     class: OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface
     public: true
-    factory: ['OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogLevel']
+    factory: ['@OxidEsales\EshopCommunity\Internal\Transition\Utility\ContextInterface', 'getLogLevel']
