@@ -18,7 +18,7 @@ class EmailUtf8Test extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
     }
@@ -28,7 +28,7 @@ class EmailUtf8Test extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

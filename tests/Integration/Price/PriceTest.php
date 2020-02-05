@@ -30,7 +30,7 @@ class PriceTest extends BaseTestCase
     /**
      * Initialize the fixture.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->resetDatabase();
@@ -39,7 +39,7 @@ class PriceTest extends BaseTestCase
     /**
      * Tear down the fixture.
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
     }

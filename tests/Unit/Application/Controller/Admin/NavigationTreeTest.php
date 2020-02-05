@@ -24,7 +24,7 @@ class NavigationTreeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -52,7 +52,7 @@ class NavigationTreeTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         // deleting test files
         switch ($this->getName()) {
@@ -64,7 +64,7 @@ class NavigationTreeTest extends \OxidTestCase
                 @unlink($this->getConfig()->getConfigParam('sCompileDir') . "{$this->_sValidDynfile}");
                 break;
         }
-        return parent::tearDown();
+        parent::tearDown();
     }
 
     /**

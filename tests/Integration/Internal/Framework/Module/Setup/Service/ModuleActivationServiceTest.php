@@ -54,7 +54,7 @@ class ModuleActivationServiceTest extends TestCase
 
     use ContainerTrait;
 
-    public function setUp()
+    public function setup(): void
     {
         $this->container = $this->setupAndConfigureContainer();
 
@@ -64,7 +64,7 @@ class ModuleActivationServiceTest extends TestCase
         parent::setUp();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->databaseRestorer->restoreDB(__CLASS__);
 

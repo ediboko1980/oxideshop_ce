@@ -43,7 +43,7 @@ class CategoryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->removeTestData();
@@ -62,7 +62,7 @@ class CategoryTest extends \OxidTestCase
      *
      * @return null
      */
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->removeTestData();
         oxRemClassModule('oxcategoryTest_oxUtilsView');

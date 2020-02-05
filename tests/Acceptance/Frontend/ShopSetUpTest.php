@@ -54,7 +54,7 @@ class ShopSetUpTest extends FrontendTestCase
     /** @var int How much more time wait for these tests. */
     protected $_iWaitTimeMultiplier = 7;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $this->preventModuleVersionNotify = false;
         parent::setUp();
@@ -62,7 +62,7 @@ class ShopSetUpTest extends FrontendTestCase
         $this->restoreModifiedFiles();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->restoreModifiedFiles();
 
