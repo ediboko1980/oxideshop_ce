@@ -64,7 +64,7 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Please fill in all needed fields!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNull($view->getViewParam('aDB'));
         }
@@ -97,7 +97,7 @@ class ControllerTest extends UnitTestCase
             $controller->dbConnect();
         } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-            $this->assertContains($errorMessage, $view->getMessages()[0]);
+            $this->assertStringContainsString($errorMessage, $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep());
             $this->assertNull($view->getViewParam('aDB'));
         }
@@ -120,7 +120,7 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
+            $this->assertStringContainsString('ERROR: Database not available and also cannot be created!', $view->getMessages()[0]);
             $this->assertEquals('400', $view->getNextSetupStep()); //STEP_DB_INFO
             $this->assertNotNull($view->getViewParam('aDB'));
 
@@ -145,9 +145,9 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
-            $this->assertContains('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
-            $this->assertContains('ow=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('ERROR: Seems there is already OXID eShop installed in database', $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to overwrite all existing data and install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[1]);
             $this->assertNull($view->getViewParam('blCreated'));
             $this->assertNotNull($view->getViewParam('aDB'));
         }
@@ -191,9 +191,9 @@ class ControllerTest extends UnitTestCase
             $controller->dbConnect();
         } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-            $this->assertContains($errorMessage, $view->getMessages()[0]);
-            $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
-            $this->assertContains('owrec=1', $view->getMessages()[1]);
+            $this->assertStringContainsString($errorMessage, $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[1]);
             $this->assertNull($view->getViewParam('aDB'));
         }
     }
@@ -239,17 +239,17 @@ class ControllerTest extends UnitTestCase
             $controller->dbConnect();
         } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-            $this->assertContains($errorMessage, $view->getMessages()[0]);
-            $this->assertContains(
+            $this->assertStringContainsString($errorMessage, $view->getMessages()[0]);
+            $this->assertStringContainsString(
                 'ERROR: Seems there is already OXID eShop installed in database',
                 $view->getMessages()[1]
             );
-            $this->assertContains(
+            $this->assertStringContainsString(
                 'If you want to overwrite all existing data and install anyway click',
                 $view->getMessages()[2]
             );
-            $this->assertContains('owrec=1', $view->getMessages()[2]);
-            $this->assertContains('ow=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[2]);
             $this->assertNull($view->getViewParam('aDB'));
         }
     }
@@ -309,16 +309,16 @@ class ControllerTest extends UnitTestCase
             $controller->dbConnect();
         } catch (SetupControllerExitException $e) {
             $view = $controller->getView();
-            $this->assertContains(
+            $this->assertStringContainsString(
                 'ERROR: Seems there is already OXID eShop installed in database',
                 $view->getMessages()[0]
             );
-            $this->assertContains(
+            $this->assertStringContainsString(
                 'If you want to overwrite all existing data and install anyway',
                 $view->getMessages()[1]
             );
-            $this->assertNotContains('owrec=1', $view->getMessages()[1]);
-            $this->assertContains('ow=1', $view->getMessages()[1]);
+            $this->assertStringNotContainsString('owrec=1', $view->getMessages()[1]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[1]);
             $this->assertNotNull($view->getViewParam('aDB'));
         }
     }
@@ -364,17 +364,17 @@ class ControllerTest extends UnitTestCase
             $controller->dbCreate();
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
-            $this->assertContains($errorMessage, $view->getMessages()[0]);
-            $this->assertContains(
+            $this->assertStringContainsString($errorMessage, $view->getMessages()[0]);
+            $this->assertStringContainsString(
                 'ERROR: Seems there is already OXID eShop installed in database',
                 $view->getMessages()[1]
             );
-            $this->assertContains(
+            $this->assertStringContainsString(
                 'If you want to overwrite all existing data and install anyway click',
                 $view->getMessages()[2]
             );
-            $this->assertContains('owrec=1', $view->getMessages()[2]);
-            $this->assertContains('ow=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[2]);
+            $this->assertStringContainsString('ow=1', $view->getMessages()[2]);
         }
     }
 
@@ -418,9 +418,9 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains($errorMessage, $view->getMessages()[0]);
-            $this->assertContains('If you want to install anyway click', $view->getMessages()[1]);
-            $this->assertContains('owrec=1', $view->getMessages()[1]);
+            $this->assertStringContainsString($errorMessage, $view->getMessages()[0]);
+            $this->assertStringContainsString('If you want to install anyway click', $view->getMessages()[1]);
+            $this->assertStringContainsString('owrec=1', $view->getMessages()[1]);
         }
     }
 
@@ -441,7 +441,7 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
+            $this->assertStringContainsString('bail out before we do harm while testing', $view->getMessages()[0]);
         }
     }
 
@@ -461,7 +461,7 @@ class ControllerTest extends UnitTestCase
         } catch (SetupControllerExitException $exception) {
             $view = $controller->getView();
 
-            $this->assertContains('bail out before we do harm while testing', $view->getMessages()[0]);
+            $this->assertStringContainsString('bail out before we do harm while testing', $view->getMessages()[0]);
         }
     }
 

@@ -474,7 +474,7 @@ class DatabaseTest extends DatabaseInterfaceImplementationTest
     {
         $result = $this->database->getRow('SELECT * FROM ' . self::TABLE_NAME);
 
-        $this->assertInternalType('array', $result);
+        $this->assertIsArray($result);
         $this->assertEmpty($result);
     }
 
